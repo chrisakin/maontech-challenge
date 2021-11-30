@@ -1,13 +1,13 @@
 // Connecting to mongoDB
 const mongoose = require('mongoose');
+require("../models/userModel");
+require("../models/questionsModel");
+
 var uri = "mongodb+srv://Azela:Mo6DwJ28xwNIzIxx@azela.nxxex.mongodb.net/test?retryWrites=true&w=majority";
 
 const options = {
-    poolSize: 10,
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useCreateIndex: true,
-    useFindAndModify: false
 };
 
 mongoose.connect(uri, options).then(() =>{
