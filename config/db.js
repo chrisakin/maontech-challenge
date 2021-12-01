@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 require("../models/userModel");
 require("../models/questionsModel");
 
-var uri = "mongodb+srv://Azela:Mo6DwJ28xwNIzIxx@azela.nxxex.mongodb.net/test?retryWrites=true&w=majority";
+var uri = "mongodb+srv://Moantech:Mo6DwJ28xwNIzIxx@azela.nxxex.mongodb.net/test?retryWrites=true&w=majority";
 
 const options = {
     useNewUrlParser: true,
