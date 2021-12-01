@@ -13,11 +13,6 @@ const should = chai.should();
 chai.use(chaiHttp);
 
 describe('Users', () => {
-    beforeEach((done) => { //Before each test we empty the database
-        User.remove({}, (err) => {
-           done();
-        });
-    });
 // /*
 //   * Test the /GET route
 //   */
@@ -27,7 +22,7 @@ describe('Users', () => {
             .get('/api/auth/oneuser')
             .end((err, res) => {
                   res.should.have.status(200);
-                  res.json.should.be.an('object');
+                  res.json.should.have.property('message').equal('Successful');
               done();
             });
       });
@@ -49,11 +44,8 @@ describe('Users', () => {
             .end((err, res) => {
                   res.should.have.status(200);
                   res.json.should.be.a('object');
-                  res.json.should.have.property('message').eql('SignUp Successful');
-                  res.json.user.should.have.property('email');
-                  res.json.user.should.have.property('name');
-                  res.json.user.should.have.property('password');
-                  res.json.user.should.have.property('displayname');
+                  res.should.have.property('token')
+                  res.json.should.have.property('message').equal('SignUp Successful');
               done();
             });
       });
@@ -74,11 +66,9 @@ describe('/POST user', () => {
           .send(user)
           .end((err, res) => {
                 res.should.have.status(200);
-                res.should.have.token
+                res.should.have.property('token')
                 res.body.should.be.a('object');
-                res.body.should.have.property('message').eql('Login Successful');
-                res.body.user.should.have.property('email');
-                res.body.user.should.have.property('password');
+                res.body.should.have.property('message').equal('Login Successful');
             done();
           });
     });
