@@ -73,5 +73,24 @@ describe('/POST user', () => {
           });
     });
 
-});
+  });
+
+  describe('/POST user', () => {
+    it('it should not login without being a user', (done) => {
+        let user = {
+            email: "xxxx@gmail.com",
+            password: "xxxxyyyyyzzzz",
+        }
+      chai.request(server)
+          .post('/api/auth/login')
+          .send(user)
+          .end((err, response) => {
+                response.should.have.status(404);
+                response.body.should.be.a('object');
+                response.body.should.have.property('success').equal(false);
+                response.body.should.have.property('message').equal('Authenticated failed, User not found');
+            done();
+          });
+    });
+  });
 });

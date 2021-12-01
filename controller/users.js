@@ -42,14 +42,16 @@ const logIn = ((req, res, next) => {
     User.findOne({ email: req.body.email }, (err, user) => {
       if (err) throw err;
       if (!user) {
-        res.json({
+        res.status(404)
+        .json({
           success: false,
           message: 'Authenticated failed, User not found'
         });
       } else if (user) {
         var validPassword = user.comparePassword(req.body.password);
         if (!validPassword) {
-          res.json({
+          res.status(404)
+          .json({
             success: false,
             message: 'Authentication failed. Wrong password'
           });
