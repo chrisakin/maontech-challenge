@@ -7,22 +7,22 @@ const User = require('../models/userModel');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../server');
-const should = chai.should();
 
 
+chai.should();
 chai.use(chaiHttp);
 
 describe('Users', () => {
-// /*
-//   * Test the /GET route
-//   */
+// // /*
+// //   * Test the /GET route
+// //   */
   describe('/GET user', () => {
       it('it should GET one user', (done) => {
         chai.request(server)
             .get('/api/auth/oneuser')
-            .end((err, res) => {
-                  res.should.have.status(200);
-                  res.json.should.have.property('message').equal('Successful');
+            .end((err, response) => {
+                  response.should.have.status(200);
+                  response.body.should.have.property('message').equal('Successful');
               done();
             });
       });
@@ -41,11 +41,11 @@ describe('Users', () => {
         chai.request(server)
             .post('/api/auth/signup')
             .send(user)
-            .end((err, res) => {
-                  res.should.have.status(200);
-                  res.json.should.be.a('object');
-                  res.should.have.property('token')
-                  res.json.should.have.property('message').equal('SignUp Successful');
+            .end((err, response) => {
+                  response.should.have.status(200);
+                  response.body.should.be.a('object');
+                  response.body.should.have.property('token')
+                  response.body.should.have.property('message').equal('SignUp Successful');
               done();
             });
       });
@@ -64,11 +64,11 @@ describe('/POST user', () => {
       chai.request(server)
           .post('/api/auth/login')
           .send(user)
-          .end((err, res) => {
-                res.should.have.status(200);
-                res.should.have.property('token')
-                res.body.should.be.a('object');
-                res.body.should.have.property('message').equal('Login Successful');
+          .end((err, response) => {
+                response.should.have.status(200);
+                response.body.should.be.a('object');
+                response.body.should.have.property('token')
+                response.body.should.have.property('message').equal('Login Successful');
             done();
           });
     });
