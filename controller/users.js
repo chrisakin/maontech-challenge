@@ -70,7 +70,7 @@ const logIn = ((req, res, next) => {
     });
   });
 
-//Function to handle Profile API (GET,POST) functionality for authenticated users 
+//Function to handle Profile API functionality for authenticated users 
 const getoneProfile = (checkJWT, (req, res, next) => {
   User.findOne({ _id: req.decoded.user._id }, (err, user) => {
     res.json({

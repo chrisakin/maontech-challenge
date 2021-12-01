@@ -14,11 +14,13 @@ app.use(cors());
 // api endpoint routes
 const userRoutes = require('./routes/userRoutes');
 const questionRoutes = require('./routes/questionRoutes');
+const profileRoutes = require('./routes/profileRoutes');
 
 //express application using Routes from this application
 app.use('/api/auth', userRoutes);
 app.use('/api/questions', questionRoutes);
+app.use('/api/profile', profileRoutes);
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`)
-});
+}); 

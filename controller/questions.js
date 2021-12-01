@@ -1,9 +1,15 @@
 const jwt = require('jsonwebtoken');
 const Question = require('../models/questionsModel');
+const Profile = require('../models/profileModel');
 const checkJWT = require('../middleware/check-jwt');
-const  passport = require( "passport");
+const elastic = require ('elasticsearch')
 
-const postQuestions = (checkJWT, (req, res, next) => {
+const elasticClient = elastic.Client({
+  host: 'localhost:9200'
+})
+
+
+const postQuestions = ((req, res, next) => {
     let question = new Question(req.body);
   question.save()
   .then(() => res.json({
@@ -18,7 +24,7 @@ const postQuestions = (checkJWT, (req, res, next) => {
 
   const getQuestions = ((req, res, next) => {
     Question.find()
-    .sort({ date: "desc" })
+    .sort({date: "desc"})
     .then((questions) => res.json({
         success: true,
         questions: questions,
@@ -33,7 +39,27 @@ const postQuestions = (checkJWT, (req, res, next) => {
     });
   })
 
-  const postAnswers = (checkJWT, (req, res, next) => {
+  const searchQuestions = ((req, res, next) => {
+      let query = {
+        index: req.query
+      }
+      if (req.query.query) query.query = `${req.query.query}`;
+      elasticClient.search(query)
+      .then (resp => {
+        return res.status(200)
+        .json({
+          search_result: resp.hits.hits
+        })
+      })
+      .catch(err => {
+        console.log (err)
+        return res.status(500).json({
+          message:"Error"
+        })
+      })
+  })
+
+  const postAnswers = ((req, res, next) => {
     Question.findById(req.params.id)
     .then((question) => {
       const newAnswer = {
@@ -59,7 +85,7 @@ const postQuestions = (checkJWT, (req, res, next) => {
 
 
   const upvoteAnswers = (checkJWT, (req, res, next) => {
-    Profile.findOne({ user: req.user.id })
+    Profile.findOne({ _id: req.decoded.user._id })
       .then((profile) => {
         Question.findById(req.params.id)
           .then((question) => {
@@ -93,5 +119,6 @@ const postQuestions = (checkJWT, (req, res, next) => {
     postQuestions,
     getQuestions,
     postAnswers,
-    upvoteAnswers
+    upvoteAnswers,
+    searchQuestions
    }
