@@ -11,6 +11,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 app.use(cors());
 
+app.get("/", (req, res) => res.json({message: "Welcome to StackOverflow"}));
 // api endpoint routes
 const userRoutes = require('./routes/userRoutes');
 const questionRoutes = require('./routes/questionRoutes');
@@ -24,3 +25,5 @@ app.use('/api/profile', profileRoutes);
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`)
 }); 
+
+module.exports = app;

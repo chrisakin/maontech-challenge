@@ -16,7 +16,7 @@ const UserSchema = new Schema({
   },
   password: {
     type: String,
-    required: true,
+    
   },
   displayname: {
     type: String,
@@ -25,24 +25,24 @@ const UserSchema = new Schema({
   created: { type: Date, default: Date.now },
 });
 
-//Function to handleEvent of password modification 
-UserSchema.pre('save', function(next) {
-  var user = this;
+// //Function to handleEvent of password modification 
+// UserSchema.pre('save', function(next) {
+//   var user = this;
 
-  if (!user.isModified('password')) return next();
+//   if (!user.isModified('password')) return next();
   
-  bcrypt.hash(user.password, null, null, function(err, hash) {
-    if (err) return next(err);
+//   bcrypt.hash(user.password, null, null, function(err, hash) {
+//     if (err) return next(err);
     
-    user.password = hash;
-    next();
-  });
-});
+//     user.password = hash;
+//     next();
+//   });
+// });
 
-//Function to check if modified and saved passwords match 
-UserSchema.methods.comparePassword = function(password) {
-  return bcrypt.compareSync(password, this.password);
-};
+// //Function to check if modified and saved passwords match 
+// UserSchema.methods.comparePassword = function(password) {
+//   return bcrypt.compareSync(password, this.password);
+// };
 
 
 //Function to Use gravatar Service for image Sizes 

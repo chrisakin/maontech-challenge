@@ -27,7 +27,7 @@ const signUp =((req, res, next) => {
          expiresIn: '1d'
        });
        res
-       
+       .status(200)
        .json({
          success: true,
          message: 'SignUp Successful',
@@ -71,8 +71,8 @@ const logIn = ((req, res, next) => {
   });
 
 //Function to handle Profile API functionality for authenticated users 
-const getoneProfile = (checkJWT, (req, res, next) => {
-  User.findOne({ _id: req.decoded.user._id }, (err, user) => {
+const getoneProfile = ((req, res, next) => {
+  User.find({}, (err, user) => {
     res.json({
       success: true,
       user: user,
