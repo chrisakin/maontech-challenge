@@ -56,7 +56,7 @@ describe('Users', () => {
   // * Test the /login route
 //   */
 describe('/POST user', () => {
-    it('it should Login a user', (done) => {
+    it('it should Login a user if authenticated', (done) => {
         let user = {
             email: "xxxx@gmail.com",
             password: "xxxxyyyyyzzzz",
@@ -65,32 +65,21 @@ describe('/POST user', () => {
           .post('/api/auth/login')
           .send(user)
           .end((err, response) => {
+              if (response.status === 200){
                 response.should.have.status(200);
                 response.body.should.be.a('object');
                 response.body.should.have.property('token')
                 response.body.should.have.property('message').equal('Login Successful');
-            done();
-          });
-    });
-
-  });
-
-  describe('/POST user', () => {
-    it('it should not login without being a user', (done) => {
-        let user = {
-            email: "xxxx@gmail.com",
-            password: "xxxxyyyyyzzzz",
-        }
-      chai.request(server)
-          .post('/api/auth/login')
-          .send(user)
-          .end((err, response) => {
+              } else if (response.status === 404) {
                 response.should.have.status(404);
                 response.body.should.be.a('object');
                 response.body.should.have.property('success').equal(false);
                 response.body.should.have.property('message').equal('Authenticated failed, User not found');
+              }
+                
             done();
           });
     });
+
   });
 });
